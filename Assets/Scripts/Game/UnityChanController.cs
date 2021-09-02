@@ -16,15 +16,18 @@ public class UnityChanController : MonoBehaviour
     [Header("Boundings")]
     [SerializeField] private RuntimeAnimatorController _charaterAnimator;	
 	[SerializeField] LayerMask _groundMask;
-
 	Animator _animator;
 	SpriteRenderer _spriteRenderer;
 	Rigidbody2D _rig2d;
+
+	[Header("Channels")]
+	[SerializeField] GameOverChannel _gameOverChannel;
     
 
     [Header("Variables")]
     [SerializeField] private float _characterHeightOffset = 0.245f;
 	[SerializeField] private float _moveSpeed = 2f;
+	[SerializeField] private float _jumpSpeed = 5f;
 
 
 	void Awake ()
@@ -55,7 +58,7 @@ public class UnityChanController : MonoBehaviour
 		if ( grounded && 
 			(jumpAxis > 0 || Input.GetButtonDown("Jump")) ) 
         {
-			velocity.y = 5;
+			velocity.y = _jumpSpeed;
 		}
 		if (moveAxis != 0)
         {
@@ -80,6 +83,10 @@ public class UnityChanController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        _animator.SetTrigger(hashDamage);  
+		if(other.CompareTag("DamageObject"))
+		{
+        	_animator.SetTrigger(hashDamage);
+			_gameOverChannel.RaiseEvent(GameOverReason.Dead);
+		}
     }
 }

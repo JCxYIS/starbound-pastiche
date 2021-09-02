@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterBaseJC
       objectReference: {fileID: 0}
+    - target: {fileID: 5182875848407302527, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
+      propertyPath: _moveSpeed
+      value: 3.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
 --- !u!1 &279659349
@@ -452,7 +456,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.18
+  orthographic size: 1.69
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -497,7 +501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameStartChannel: {fileID: 11400000, guid: 7aba5a9970275fe41a9ce3e287f615db, type: 2}
   isStarted: 0
-  scrollSpeed: 0.015
+  scrollSpeed: 0.02
 --- !u!1 &996121193
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,14 +620,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996121193}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -662,6 +666,7 @@ MonoBehaviour:
   _floorCanReallocateChannel: {fileID: 11400000, guid: d3954ec00a170084c9eefe4f9dc4f954, type: 2}
   _floorFirstSteppedChannel: {fileID: 11400000, guid: 716b77d929062f34c9051eb4368d6a54, type: 2}
   _gameStartChannel: {fileID: 11400000, guid: 7aba5a9970275fe41a9ce3e287f615db, type: 2}
+  _gameOverChannel: {fileID: 11400000, guid: 98dffee5f96d9b74396a0ea13a9ab0d8, type: 2}
   steppedFloor: 0
   createdFloor: 0
 --- !u!4 &1894931814

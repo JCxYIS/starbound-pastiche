@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] FloorCanReallocateChannel _floorCanReallocateChannel;
     [SerializeField] FloorFirstSteppedChannel _floorFirstSteppedChannel;
     [SerializeField] GameStartChannel _gameStartChannel;
+    [SerializeField] GameOverChannel _gameOverChannel;
     
     [Header("Variables")]
     [SerializeField] int steppedFloor = 0;
@@ -44,6 +45,7 @@ public class GameController : MonoBehaviour
     {
         _floorCanReallocateChannel.OnEventRaised += OnFloorCanReallocate;
         _floorFirstSteppedChannel.OnEventRaised += OnfloorStepped;
+        _gameOverChannel.OnEventRaised += GameOver;
     }
 
     /// <summary>
@@ -53,6 +55,7 @@ public class GameController : MonoBehaviour
     {
         _floorCanReallocateChannel.OnEventRaised -= OnFloorCanReallocate;
         _floorFirstSteppedChannel.OnEventRaised -= OnfloorStepped;
+        _gameOverChannel.OnEventRaised -= GameOver;
     }
 
 
@@ -89,9 +92,9 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    void GameOver()
+    void GameOver(GameOverReason reason)
     {
-
+        print(reason);
     }
 
     private void OnfloorStepped(Floor floor)

@@ -52,8 +52,10 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1
+  _gameOverChannel: {fileID: 11400000, guid: 98dffee5f96d9b74396a0ea13a9ab0d8, type: 2}
   _characterHeightOffset: 0.245
   _moveSpeed: 3
+  _jumpSpeed: 5
 --- !u!212 &4614213691818669271
 SpriteRenderer:
   m_ObjectHideFlags: 0

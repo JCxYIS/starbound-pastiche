@@ -56,7 +56,7 @@ public class Floor : MonoBehaviour
     /// <param name="other">The other Collider2D involved in this collision.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("DamageObject"))
+        if(other.CompareTag("DamageObject"))
         {
             _floorCanReallocateChannel.RaiseEvent(this);
         }
