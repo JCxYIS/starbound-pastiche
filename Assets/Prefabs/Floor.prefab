@@ -50,6 +50,7 @@ MonoBehaviour:
   stepped: 0
   _floorCanReallocateChannel: {fileID: 11400000, guid: d3954ec00a170084c9eefe4f9dc4f954, type: 2}
   _floorFirstSteppedChannel: {fileID: 11400000, guid: 716b77d929062f34c9051eb4368d6a54, type: 2}
+  _playerIsVelocityPositive: {fileID: 11400000, guid: 9d5a92a9645e2564ebfc720c4e50a0bb, type: 2}
 --- !u!212 &6964171828939683436
 SpriteRenderer:
   m_ObjectHideFlags: 0

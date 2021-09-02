@@ -8,6 +8,8 @@ public class ScoreDisplay : MonoBehaviour
     [Header("Bindings")]
     [SerializeField] Text _score;
     [SerializeField] Text _combo;
+    [SerializeField] Text _lv;
+    [SerializeField] Slider _lvSlider;
     [SerializeField] Text _debug;
 
     [Header("Predefine")]
@@ -27,6 +29,7 @@ public class ScoreDisplay : MonoBehaviour
     {
         _gameStartChannel.OnEventRaised += gc => gameController = gc;
         _comboChangeChannel.OnEventRaised += OnComboChange;
+        OnComboChange(0);
     }
 
 
@@ -36,6 +39,7 @@ public class ScoreDisplay : MonoBehaviour
     void Update()
     {
         _score.text = gameController?.score.ToString("000000000") ?? "000000000";
+        _lv.text = gameController?.lv.ToString("") ?? "";
     }
 
     void OnComboChange(uint combo)

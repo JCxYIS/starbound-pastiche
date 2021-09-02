@@ -1,15 +1,24 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class CameraController : MonoBehaviour
 {
     [Header("Channels")]
     [SerializeField] GameStartChannel _gameStartChannel;
+    [SerializeField] GameOverChannel _gameOverChannel;
+    [SerializeField] LvUpChannel _lvUpChannel;
+
+    [Header("Predefine Params")]
+    [SerializeField] float minSpeed = 0.014f;
+    [SerializeField] float maxSpeed = 0.035f;
+    [SerializeField] AnimationCurve speedCurve;
+
 
     [Header("Variables")]
     [SerializeField] bool isStarted = false;
-    [SerializeField] float scrollSpeed = 1;
+    [SerializeField] float scrollSpeed = 0.025f;
 
     
     /// <summary>
@@ -28,19 +37,16 @@ public class CameraController : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
-        _gameStartChannel.OnEventRaised += StartScroll;
+        _gameStartChannel.OnEventRaised += _=> isStarted = true;
+        _gameOverChannel.OnEventRaised += _=>isStarted = false;
+        _lvUpChannel.OnEventRaised += OnLvUp;
     }
 
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
-    void OnDisable()
+    private void OnLvUp(uint lv)
     {
-        _gameStartChannel.OnEventRaised -= StartScroll;        
-    }
-
-    public void StartScroll(GameController gc)
-    {
-        isStarted = true;
+        // 15: 基本起始
+        // 30: 不跨跳極限
+        // 75: 跨跳極限
+        scrollSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedCurve.Evaluate(lv/30f));
     }
 }

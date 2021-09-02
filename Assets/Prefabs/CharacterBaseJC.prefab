@@ -53,9 +53,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _gameOverChannel: {fileID: 11400000, guid: 98dffee5f96d9b74396a0ea13a9ab0d8, type: 2}
+  _floorFirstSteppedChannel: {fileID: 11400000, guid: 716b77d929062f34c9051eb4368d6a54, type: 2}
+  _playerIsVelocityPositive: {fileID: 11400000, guid: 9d5a92a9645e2564ebfc720c4e50a0bb, type: 2}
   _characterHeightOffset: 0.245
-  _moveSpeed: 3
+  _moveSpeed: 3.5
   _jumpSpeed: 5
+  groundedMoveFrames: 0
 --- !u!212 &4614213691818669271
 SpriteRenderer:
   m_ObjectHideFlags: 0

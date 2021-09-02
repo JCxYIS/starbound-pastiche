@@ -22,13 +22,31 @@ public class UnityChanController : MonoBehaviour
 
 	[Header("Channels")]
 	[SerializeField] GameOverChannel _gameOverChannel;
+	[SerializeField] FloorFirstSteppedChannel _floorFirstSteppedChannel;
+	[SerializeField] ComboAddChannel _comboAddChannel;
     
 
-    [Header("Variables")]
+    [Header("Param")]
     [SerializeField] private float _characterHeightOffset = 0.245f;
 	[SerializeField] private float _moveSpeed = 2f;
 	[SerializeField] private float _jumpSpeed = 5f;
 
+	[Header("Variable")]
+	[SerializeField] private bool dontCountGroundedMoveTimes = false;
+	[SerializeField] private float groundedMoveTimes;
+
+
+	/// <summary>
+	/// This function is called when the object becomes enabled and active.
+	/// </summary>
+	void OnEnable()
+	{
+		_floorFirstSteppedChannel.OnEventRaised += _ =>{
+			 if(groundedMoveTimes <= 0.15f)
+			 	_comboAddChannel.RaiseEvent();
+			 groundedMoveTimes = 0;
+		};
+	}
 
 	void Awake ()
 	{
@@ -55,18 +73,23 @@ public class UnityChanController : MonoBehaviour
         // print(distanceFromGround);
 
         // controls
-		if ( grounded && 
-			(jumpAxis > 0 || Input.GetButtonDown("Jump")) ) 
-        {
-			velocity.y = _jumpSpeed;
+		if(grounded)
+		{
+			if (jumpAxis > 0 || Input.GetButtonDown("Jump")) 
+			{
+				velocity.y = _jumpSpeed;
+			}
 		}
+			
+
 		if (moveAxis != 0)
         {
 			_spriteRenderer.flipX = moveAxis < 0;
             velocity.x = moveAxis * _moveSpeed;
+			if(grounded && !dontCountGroundedMoveTimes)
+				groundedMoveTimes += Time.deltaTime;
         }
         _rig2d.velocity = velocity;
-
 
 		// update animator parameters
 		_animator.SetBool (hashIsCrouch, jumpAxis < 0);
@@ -80,6 +103,20 @@ public class UnityChanController : MonoBehaviour
         }
 	}
     
+
+	/// <summary>
+	/// Sent when an incoming collider makes contact with this object's
+	/// collider (2D physics only).
+	/// </summary>
+	/// <param name="other">The Collision2D data associated with this collision.</param>
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if(_rig2d.velocity.y > 0)
+			dontCountGroundedMoveTimes = true;
+		else
+			dontCountGroundedMoveTimes = false;
+	}
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

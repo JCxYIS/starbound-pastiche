@@ -13,14 +13,6 @@ public class Floor : MonoBehaviour
     [SerializeField] FloorFirstSteppedChannel _floorFirstSteppedChannel;
 
 
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void Update()
-    {
-        
-    }
-
     public void Reallocate(uint index, float posX)
     {
         gameObject.name = $"Floor {index}";

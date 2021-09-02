@@ -18,11 +18,16 @@ public class GameController : MonoBehaviour
     [SerializeField] GameStartChannel _gameStartChannel;
     [SerializeField] GameOverChannel _gameOverChannel;
     [SerializeField] ComboChangeChannel _comboChangeChannel;
+    [SerializeField] ComboAddChannel _comboAddChannel;
+    [SerializeField] LvUpChannel _lvUpChannel;
+
     
     [Header("Variables")]
     [SerializeField] uint createdFloor = 0;
     [SerializeField] uint combo = 0;
     [SerializeField] bool isGameRunning = false;
+    [SerializeField] float comboResetClock = 0f;
+    [SerializeField] float nextLvUpTime = 0f;
     public BigInteger score = 0;
     public uint lv = 0;
     public uint maxCombo = 0;
@@ -59,8 +64,17 @@ public class GameController : MonoBehaviour
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     void Update()
-    {
-        
+    {   
+        // combo reset
+        if(comboResetClock > 0)
+        {
+            comboResetClock -= Time.deltaTime;
+            if(comboResetClock <= 0)
+            {
+                combo = 0;
+                _comboChangeChannel.RaiseEvent(combo);
+            }
+        }
     }
 
     /// <summary>
@@ -68,9 +82,18 @@ public class GameController : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        // add score
         if(isGameRunning)
         {
-            score += (uint)Mathf.Pow(combo, 2);
+            score += ((BigInteger)combo * combo * combo + 1) * lv * lv;
+        }
+
+        // lv up
+        if(_bgmPlayer.time > nextLvUpTime)
+        {
+            lv++;
+            nextLvUpTime = _bgm.length / 30f * lv;
+            _lvUpChannel.RaiseEvent(lv);
         }
     }
 
@@ -81,8 +104,9 @@ public class GameController : MonoBehaviour
     {
         _floorCanReallocateChannel.OnEventRaised += OnFloorCanReallocate;
         _floorFirstSteppedChannel.OnEventRaised += OnfloorStepped;
+        _comboAddChannel.OnEventRaised += DoComboAdd;
         _gameOverChannel.OnEventRaised += GameOver;
-    }
+    }    
 
     /// <summary>
     /// This function is called when the behaviour becomes disabled or inactive.
@@ -132,6 +156,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     void GameOver(GameOverReason reason)
     {
+        if(!isGameRunning)
+            return;
         print(reason);
         ResultCanvas resultCanvas = Instantiate(_resultCanvasPrefab).GetComponent<ResultCanvas>();
         resultCanvas.Init(reason, this);
@@ -146,13 +172,21 @@ public class GameController : MonoBehaviour
         {
             GameStart();
         }
-        combo++;
-        _comboChangeChannel.RaiseEvent(combo);
-    
     }
+
+    private void DoComboAdd()
+    {
+        combo++;
+        if(combo > maxCombo)
+            maxCombo = combo;
+        comboResetClock = 2.020f;
+        _comboChangeChannel.RaiseEvent(combo); 
+    }
+
     private void OnFloorCanReallocate(Floor floor)
     {
         Floor newFloor = AllocateFloor();
     }
 
+    
 }
