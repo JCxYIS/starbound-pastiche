@@ -67,7 +67,7 @@ public class UnityChanController : MonoBehaviour
 
 		// update animator parameters
 		_animator.SetBool (hashIsCrouch, jumpAxis < 0);
-		_animator.SetFloat(hashGroundDistance, grounded ? 0 : distanceFromGround);
+		_animator.SetFloat(hashGroundDistance, grounded ? 0 : 1/*distanceFromGround*/);
 		_animator.SetFloat(hashFallSpeed, _rig2d.velocity.y);
 		_animator.SetFloat(hashSpeed, Mathf.Abs (moveAxis));        
         // test: hit anim
