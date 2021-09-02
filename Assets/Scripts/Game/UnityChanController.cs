@@ -41,8 +41,8 @@ public class UnityChanController : MonoBehaviour
 
 	void Update ()
 	{
-		float moveAxis = Input.GetAxis ("Horizontal");
-		bool jumpAxis = Input.GetAxisRaw ("Vertical") < 0;        
+		float moveAxis = Input.GetAxis("Horizontal");
+		float jumpAxis = Input.GetAxisRaw("Vertical");        
         Vector2 velocity = _rig2d.velocity;
 
         // get distance
@@ -52,7 +52,8 @@ public class UnityChanController : MonoBehaviour
         // print(distanceFromGround);
 
         // controls
-		if (Input.GetButtonDown ("Jump") && grounded) 
+		if ( grounded && 
+			(jumpAxis > 0 || Input.GetButtonDown("Jump")) ) 
         {
 			velocity.y = 5;
 		}
@@ -65,7 +66,7 @@ public class UnityChanController : MonoBehaviour
 
 
 		// update animator parameters
-		_animator.SetBool (hashIsCrouch, jumpAxis);
+		_animator.SetBool (hashIsCrouch, jumpAxis < 0);
 		_animator.SetFloat(hashGroundDistance, grounded ? 0 : distanceFromGround);
 		_animator.SetFloat(hashFallSpeed, _rig2d.velocity.y);
 		_animator.SetFloat(hashSpeed, Mathf.Abs (moveAxis));        
