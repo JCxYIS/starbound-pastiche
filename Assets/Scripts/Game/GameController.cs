@@ -9,6 +9,9 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject _floorprefab;
     [SerializeField] GameObject _resultCanvasPrefab;
 
+    [Header("Predefine")]
+    [SerializeField] AudioClip _bgm;
+
     [Header("Channels")]
     [SerializeField] FloorCanReallocateChannel _floorCanReallocateChannel;
     [SerializeField] FloorFirstSteppedChannel _floorFirstSteppedChannel;
@@ -19,12 +22,16 @@ public class GameController : MonoBehaviour
     [Header("Variables")]
     [SerializeField] uint createdFloor = 0;
     [SerializeField] uint combo = 0;
+    [SerializeField] bool isGameRunning = false;
     public BigInteger score = 0;
     public uint lv = 0;
     public uint maxCombo = 0;
     public uint steppedFloor = 0;
     public int randomSeed = 0;
     [SerializeField] Queue<Floor> floors = new Queue<Floor>();
+
+    AudioSource _bgmPlayer;
+
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -41,7 +48,11 @@ public class GameController : MonoBehaviour
         for(int i = 0; i < 10; i++)
         {
             AllocateFloor(); // new Vector2(Random.Range(-2f, 2f), i+0.5f) 
-        }        
+        }      
+
+        // init bgm
+        _bgmPlayer = gameObject.AddComponent<AudioSource>();
+        _bgmPlayer.clip = _bgm;  
     }
 
     /// <summary>
@@ -50,6 +61,17 @@ public class GameController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    /// <summary>
+    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void FixedUpdate()
+    {
+        if(isGameRunning)
+        {
+            score += (uint)Mathf.Pow(combo, 2);
+        }
     }
 
     /// <summary>
@@ -101,6 +123,8 @@ public class GameController : MonoBehaviour
     {
         print("Game Start!");
         _gameStartChannel.RaiseEvent(this);
+        _bgmPlayer.Play();
+        isGameRunning = true;
     }
 
     /// <summary>
@@ -110,8 +134,10 @@ public class GameController : MonoBehaviour
     {
         print(reason);
         ResultCanvas resultCanvas = Instantiate(_resultCanvasPrefab).GetComponent<ResultCanvas>();
-        
-    }
+        resultCanvas.Init(reason, this);
+        _bgmPlayer.Pause();
+        isGameRunning = false;
+    }   
 
     private void OnfloorStepped(Floor floor)
     {

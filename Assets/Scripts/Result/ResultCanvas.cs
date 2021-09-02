@@ -31,7 +31,7 @@ public class ResultCanvas : MonoBehaviour
     public void Init(GameOverReason ggReason, GameController gameController)
     {
         _title.text = ggReason == GameOverReason.Finished ? "SUCCESS" : "FAILED...";
-        _score.text = gameController.score.ToString();
+        _score.text = gameController.score.ToString("000000000");
         _stats.text = gameController.lv + "\n"+
             gameController.maxCombo + "\n" +
             gameController.steppedFloor + "\n";

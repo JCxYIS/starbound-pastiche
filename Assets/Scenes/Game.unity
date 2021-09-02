@@ -193,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: x000
+  m_Text: x0
 --- !u!222 &28825671
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1153,6 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorprefab: {fileID: 6964171828939683434, guid: 98d0471611bd6b54f8482637b3505635, type: 3}
   _resultCanvasPrefab: {fileID: 6258203027523075824, guid: be643ab3b190e2b489d48ad6fce9f251, type: 3}
+  _bgm: {fileID: 8300000, guid: 15ebc2fb4be383045ac7f6ed1f5a5a8b, type: 3}
   _floorCanReallocateChannel: {fileID: 11400000, guid: d3954ec00a170084c9eefe4f9dc4f954, type: 2}
   _floorFirstSteppedChannel: {fileID: 11400000, guid: 716b77d929062f34c9051eb4368d6a54, type: 2}
   _gameStartChannel: {fileID: 11400000, guid: 7aba5a9970275fe41a9ce3e287f615db, type: 2}
@@ -1160,6 +1161,7 @@ MonoBehaviour:
   _comboChangeChannel: {fileID: 11400000, guid: 02bbd7b9ec7927b4d8d2b314f8f93975, type: 2}
   createdFloor: 0
   combo: 0
+  isGameRunning: 0
   lv: 0
   maxCombo: 0
   steppedFloor: 0
