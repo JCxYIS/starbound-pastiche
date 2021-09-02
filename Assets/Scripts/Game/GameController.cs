@@ -1,21 +1,29 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 
 public class GameController : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] GameObject _floorprefab;
+    [SerializeField] GameObject _resultCanvasPrefab;
 
     [Header("Channels")]
     [SerializeField] FloorCanReallocateChannel _floorCanReallocateChannel;
     [SerializeField] FloorFirstSteppedChannel _floorFirstSteppedChannel;
     [SerializeField] GameStartChannel _gameStartChannel;
     [SerializeField] GameOverChannel _gameOverChannel;
+    [SerializeField] ComboChangeChannel _comboChangeChannel;
     
     [Header("Variables")]
-    [SerializeField] int steppedFloor = 0;
-    [SerializeField] int createdFloor = 0;
+    [SerializeField] uint createdFloor = 0;
+    [SerializeField] uint combo = 0;
+    public BigInteger score = 0;
+    public uint lv = 0;
+    public uint maxCombo = 0;
+    public uint steppedFloor = 0;
+    public int randomSeed = 0;
     [SerializeField] Queue<Floor> floors = new Queue<Floor>();
 
     /// <summary>
@@ -24,6 +32,12 @@ public class GameController : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // init random
+        if(randomSeed == 0)
+            randomSeed = Random.Range(int.MinValue, int.MaxValue);
+        Random.InitState(randomSeed);
+
+        // init floors
         for(int i = 0; i < 10; i++)
         {
             AllocateFloor(); // new Vector2(Random.Range(-2f, 2f), i+0.5f) 
@@ -86,7 +100,7 @@ public class GameController : MonoBehaviour
     void GameStart()
     {
         print("Game Start!");
-        _gameStartChannel.RaiseEvent();
+        _gameStartChannel.RaiseEvent(this);
     }
 
     /// <summary>
@@ -95,6 +109,8 @@ public class GameController : MonoBehaviour
     void GameOver(GameOverReason reason)
     {
         print(reason);
+        ResultCanvas resultCanvas = Instantiate(_resultCanvasPrefab).GetComponent<ResultCanvas>();
+        
     }
 
     private void OnfloorStepped(Floor floor)
@@ -104,6 +120,9 @@ public class GameController : MonoBehaviour
         {
             GameStart();
         }
+        combo++;
+        _comboChangeChannel.RaiseEvent(combo);
+    
     }
     private void OnFloorCanReallocate(Floor floor)
     {

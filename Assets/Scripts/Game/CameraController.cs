@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
         _gameStartChannel.OnEventRaised -= StartScroll;        
     }
 
-    public void StartScroll()
+    public void StartScroll(GameController gc)
     {
         isStarted = true;
     }

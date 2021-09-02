@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Floor : MonoBehaviour
 {
     [Header("Variables")]
-    public int index;
+    public uint index;
     public bool stepped;
 
     [Header("Channels")]
@@ -21,7 +21,7 @@ public class Floor : MonoBehaviour
         
     }
 
-    public void Reallocate(int index, float posX)
+    public void Reallocate(uint index, float posX)
     {
         gameObject.name = $"Floor {index}";
         this.index = index;

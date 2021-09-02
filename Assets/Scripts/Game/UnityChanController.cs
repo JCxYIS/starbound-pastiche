@@ -87,6 +87,7 @@ public class UnityChanController : MonoBehaviour
 		{
         	_animator.SetTrigger(hashDamage);
 			_gameOverChannel.RaiseEvent(GameOverReason.Dead);
+			this.enabled = false;
 		}
     }
 }
