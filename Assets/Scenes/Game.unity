@@ -405,22 +405,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterBaseJC
       objectReference: {fileID: 0}
-    - target: {fileID: 4614213691818669274, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4614213691818669275, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5182875848407302527, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
-      propertyPath: _jumpSpeed
-      value: 4.8763
-      objectReference: {fileID: 0}
-    - target: {fileID: 5182875848407302527, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
-      propertyPath: _comboAddChannel
-      value: 
-      objectReference: {fileID: 11400000, guid: eebc5fa9148fb0345bc991c7903db47e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
 --- !u!1 &279659349
