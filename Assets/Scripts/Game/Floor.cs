@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class Floor : MonoBehaviour
 {
+    [Header("Param")]
+    [SerializeField] Sprite[] _sprites;
+
     [Header("Variables")]
     public uint index;
     public bool stepped;
@@ -12,16 +15,32 @@ public class Floor : MonoBehaviour
     [SerializeField] FloorCanReallocateChannel _floorCanReallocateChannel;
     [SerializeField] FloorFirstSteppedChannel _floorFirstSteppedChannel;
 
+    SpriteRenderer _spriteRenderer;
+    BoxCollider2D _boxCollider2D;
 
-    public void Reallocate(uint index, float posX)
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+    }
+
+
+    public void Reallocate(uint index, int spriteId, float posX, float floorWidth)
     {
         gameObject.name = $"Floor {index}";
         this.index = index;
-        stepped = false;
-        transform.position = new Vector3(posX, index);
 
-        int length = 2; // TODO floor length
-        transform.localScale = new Vector3(length, transform.localScale.y, transform.localScale.z);
+        _spriteRenderer.sprite = _sprites[spriteId];
+        _spriteRenderer.size = new Vector2(0.31f + floorWidth * 0.38f, _spriteRenderer.size.y);
+
+        transform.position = new Vector3(posX, index);
+        // transform.localScale = new Vector3(floorWidth, transform.localScale.y, transform.localScale.z);
+
+        stepped = false;
     }
     
     /// <summary>

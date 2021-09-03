@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     [SerializeField] bool isGameRunning = false;
     [SerializeField] float comboResetClock = 0f;
     [SerializeField] float nextLvUpTime = 0f;
+    [SerializeField] float lastPosX = 0f;
     public BigInteger score = 0;
     public uint lv = 0;
     public uint maxCombo = 0;
@@ -35,6 +36,9 @@ public class GameController : MonoBehaviour
     public int randomSeed = 0;
     public float lvProgress;
     [SerializeField] Queue<Floor> floors = new Queue<Floor>();
+
+    public int Section => (int)(lv-1) / 10;              // lv.0-10 => 0, lv.11-19 => 1, lv.30 => 2
+    public float LvAtCurrentSection => (lv-1) % 10;      // lv.X1 => 0, lv.X3 => 2, lv.X0 => 9
 
     AudioSource _bgmPlayer;
 
@@ -51,7 +55,7 @@ public class GameController : MonoBehaviour
         Random.InitState(randomSeed);
 
         // init floors
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 5; i++)
         {
             AllocateFloor(); // new Vector2(Random.Range(-2f, 2f), i+0.5f) 
         }      
@@ -124,7 +128,7 @@ public class GameController : MonoBehaviour
     Floor AllocateFloor()
     {
         Floor f;
-        if(floors.Count <= 10)
+        if(floors.Count <= 5)
         {
             f = Instantiate(_floorprefab).GetComponent<Floor>();
         }    
@@ -135,7 +139,57 @@ public class GameController : MonoBehaviour
 
         floors.Enqueue(f);
         createdFloor++;
-        f.Reallocate(createdFloor, Random.Range(-2f, 2f) ); // TODO randomize floor spawn
+
+        // detemine floor width (1~3) and pos
+        float floorWidth = 1;
+        float minDistance = 1;
+        float maxDistance = 1;
+        uint mlv = lv < 1 ? 1 : lv;
+
+        if(mlv <= 10)
+        {
+            floorWidth = Mathf.Lerp(3.0f, 2.2f, (mlv-1)/9f);
+            maxDistance = Mathf.Lerp(0.8f, 2.0f, (mlv-1)/9f);
+            minDistance = Mathf.Lerp(0.1f, 1.3f, (mlv-1)/9f);
+        }
+        else if(mlv <= 20)
+        {
+            floorWidth = Mathf.Lerp(2.2f, 2.0f, (mlv-11)/9f);
+            maxDistance = Mathf.Lerp(0.9f, 1.7f, (mlv-11)/9f);
+            minDistance = Mathf.Lerp(0.2f, 1.0f, (mlv-11)/9f);
+        }
+        else if(mlv <= 28)
+        {
+            floorWidth = 2f;
+            maxDistance = Mathf.Lerp(1.0f, 1.7f, (mlv-21)/7f);
+            minDistance = Mathf.Lerp(0.3f, 1.0f, (mlv-21)/7f);
+        }
+        else
+        {
+            floorWidth = 1f;
+            maxDistance = 1.2f;
+            minDistance = 0.3f;
+        }
+
+                
+        float floorPosX = 9999;
+        float distance = Mathf.Abs(floorPosX - lastPosX);
+        int attempt = 0;
+        while(distance > maxDistance || distance < minDistance)
+        {
+            if(attempt > 30)
+            {
+                print($"<color=red>[FLOOR] DISTANCE={minDistance} < {distance}</color>");
+                break;
+            }            
+            floorPosX = Random.Range(-2f, 2f);
+            distance = Mathf.Abs(floorPosX - lastPosX);
+            attempt++;
+        }
+        lastPosX = floorPosX;
+
+        print($"[FLOOR] WIDTH=<color=green>{floorWidth}</color> DISTANCE={minDistance} < <color=green>{distance}</color> < {maxDistance} @ {floorPosX}");
+        f.Reallocate(createdFloor, Section, floorPosX, floorWidth); 
 
         return f;
     }

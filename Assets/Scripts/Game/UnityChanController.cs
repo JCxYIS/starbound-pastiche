@@ -16,6 +16,7 @@ public class UnityChanController : MonoBehaviour
     [Header("Boundings")]
     [SerializeField] private RuntimeAnimatorController _charaterAnimator;	
 	[SerializeField] LayerMask _groundMask;
+
 	Animator _animator;
 	SpriteRenderer _spriteRenderer;
 	Rigidbody2D _rig2d;
@@ -42,7 +43,7 @@ public class UnityChanController : MonoBehaviour
 	void OnEnable()
 	{
 		_floorFirstSteppedChannel.OnEventRaised += _ =>{
-			 if(groundedMoveTimes <= 0.12f)
+			 if(groundedMoveTimes <= 0.10f)
 			 	_comboAddChannel.RaiseEvent();
 			else
 				print(groundedMoveTimes);
@@ -71,7 +72,7 @@ public class UnityChanController : MonoBehaviour
         // get distance
         var raycast = Physics2D.Raycast(transform.position, Vector3.down, 1f, _groundMask);        
 		float distanceFromGround = raycast.distance == 0 ? float.MaxValue : raycast.distance - _characterHeightOffset; // 0: no obejct
-        bool grounded = distanceFromGround < 0.0048763f;
+        bool grounded = distanceFromGround < 0.01f;
         // print(distanceFromGround);
 
         // controls

@@ -47,12 +47,11 @@ public class ScoreDisplay : MonoBehaviour
 
             if(gameController.lv == 0)
                 return;
-            int section = (int)(gameController.lv-1) / 10; // e.g. lv.1 => 0, lv.13 => 1, lv.30 => 2
-            float lvSection = (gameController.lv-1) % 10;  // e.g. lv.1 => 0, lv.13 => 2, lv.30 => 9
-            _lvSlider.value =  (lvSection + gameController.lvProgress) / 10;
+            
+            _lvSlider.value =  (gameController.LvAtCurrentSection + gameController.lvProgress) / 10;
             if(!_lvSliderFillRect)
                 _lvSliderFillRect = _lvSlider.fillRect.GetComponent<Image>();
-            _lvSliderFillRect.color = _colorsOfSlider[section];
+            _lvSliderFillRect.color = _colorsOfSlider[gameController.Section];
         }
         else
         {

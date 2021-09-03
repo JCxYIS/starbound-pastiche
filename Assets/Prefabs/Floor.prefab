@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6964171828939683434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.936, y: 0.744, z: 0}
-  m_LocalScale: {x: 1, y: 0.08, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -46,11 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9564ff9679f0f9f4097f9828ae80a3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sprites:
+  - {fileID: -6468341902652231549, guid: d1c7fc3b37630bf489690bc4b804a179, type: 3}
+  - {fileID: -5099891286554169108, guid: d1c7fc3b37630bf489690bc4b804a179, type: 3}
+  - {fileID: 8885387894147674855, guid: d1c7fc3b37630bf489690bc4b804a179, type: 3}
+  - {fileID: 8885387894147674855, guid: d1c7fc3b37630bf489690bc4b804a179, type: 3}
   index: 0
   stepped: 0
   _floorCanReallocateChannel: {fileID: 11400000, guid: d3954ec00a170084c9eefe4f9dc4f954, type: 2}
   _floorFirstSteppedChannel: {fileID: 11400000, guid: 716b77d929062f34c9051eb4368d6a54, type: 2}
-  _playerIsVelocityPositive: {fileID: 11400000, guid: 9d5a92a9645e2564ebfc720c4e50a0bb, type: 2}
 --- !u!212 &6964171828939683436
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -91,13 +95,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: df389ffcb148f4707bcaab35b5e1c06c, type: 3}
+  m_Sprite: {fileID: 8885387894147674855, guid: d1c7fc3b37630bf489690bc4b804a179, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
+  m_DrawMode: 2
+  m_Size: {x: 1.07, y: 0.3}
+  m_AdaptiveModeThreshold: 0
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
@@ -115,18 +119,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0022116005}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.35999998, y: 0, z: 0.35999998, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    oldSize: {x: 1.06, y: 0.3}
+    newSize: {x: 1.07, y: 0.3}
+    adaptiveTilingThreshold: 0
+    drawMode: 2
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.33210462}
   m_EdgeRadius: 0
 --- !u!251 &6964171828939683438
 PlatformEffector2D:
@@ -143,7 +147,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 120
+  m_SurfaceArc: 135
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1

@@ -405,6 +405,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterBaseJC
       objectReference: {fileID: 0}
+    - target: {fileID: 4614213691818669274, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4614213691818669275, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5182875848407302527, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
+      propertyPath: _jumpSpeed
+      value: 4.8763
+      objectReference: {fileID: 0}
     - target: {fileID: 5182875848407302527, guid: 99ac98732b6176d4ea224e4c902c1737, type: 3}
       propertyPath: _comboAddChannel
       value: 
@@ -926,8 +938,8 @@ MonoBehaviour:
   _gameStartChannel: {fileID: 11400000, guid: 7aba5a9970275fe41a9ce3e287f615db, type: 2}
   _gameOverChannel: {fileID: 11400000, guid: 98dffee5f96d9b74396a0ea13a9ab0d8, type: 2}
   _lvUpChannel: {fileID: 11400000, guid: ebd2a85b5f834d541a2731bd2f48c1d7, type: 2}
-  minSpeed: 0.0187
-  maxSpeed: 0.0426
+  minSpeed: 0.019
+  maxSpeed: 0.033
   speedCurve:
     serializedVersion: 2
     m_Curve:
@@ -1905,6 +1917,7 @@ MonoBehaviour:
   isGameRunning: 0
   comboResetClock: 0
   nextLvUpTime: 0
+  lastPosX: 0
   lv: 0
   maxCombo: 0
   steppedFloor: 0
