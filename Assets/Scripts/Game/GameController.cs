@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour
         // add score
         if(isGameRunning)
         {
-            score += ((BigInteger)combo * combo * combo + 1) * lv * lv;
+            score += ((BigInteger)combo * combo + 1) * lv * lv;
         }
 
         // lv up
@@ -149,20 +149,20 @@ public class GameController : MonoBehaviour
         if(mlv <= 10)
         {
             floorWidth = Mathf.Lerp(3.0f, 2.2f, (mlv-1)/9f);
-            maxDistance = Mathf.Lerp(0.8f, 2.0f, (mlv-1)/9f);
+            maxDistance = Mathf.Lerp(0.8f, 2.2f, (mlv-1)/9f);
             minDistance = Mathf.Lerp(0.1f, 1.3f, (mlv-1)/9f);
         }
         else if(mlv <= 20)
         {
             floorWidth = Mathf.Lerp(2.2f, 2.0f, (mlv-11)/9f);
-            maxDistance = Mathf.Lerp(0.9f, 1.7f, (mlv-11)/9f);
+            maxDistance = Mathf.Lerp(0.9f, 1.9f, (mlv-11)/9f);
             minDistance = Mathf.Lerp(0.2f, 1.0f, (mlv-11)/9f);
         }
         else if(mlv <= 28)
         {
             floorWidth = 2f;
             maxDistance = Mathf.Lerp(1.0f, 1.7f, (mlv-21)/7f);
-            minDistance = Mathf.Lerp(0.3f, 1.0f, (mlv-21)/7f);
+            minDistance = Mathf.Lerp(0.3f, 0.8f, (mlv-21)/7f);
         }
         else
         {
@@ -227,6 +227,11 @@ public class GameController : MonoBehaviour
         if(steppedFloor == 1)
         {
             GameStart();
+        }
+
+        if(lv >= 30 && !_bgmPlayer.isPlaying) // TODO end condition
+        {
+            GameOver(GameOverReason.Finished);
         }
     }
 

@@ -34,6 +34,14 @@ public class ScoreDisplay : MonoBehaviour
         OnComboChange(0);
     }
 
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
+    void OnDisable()
+    {        
+        _comboChangeChannel.OnEventRaised -= OnComboChange;
+    }
+
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.

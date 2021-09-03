@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class ResultCanvas : MonoBehaviour
 {
@@ -25,7 +26,10 @@ public class ResultCanvas : MonoBehaviour
     /// </summary>
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            SceneManager.LoadScene("Game");
+        }
     }
 
     public void Init(GameOverReason ggReason, GameController gameController)
