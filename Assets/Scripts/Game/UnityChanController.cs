@@ -42,8 +42,10 @@ public class UnityChanController : MonoBehaviour
 	void OnEnable()
 	{
 		_floorFirstSteppedChannel.OnEventRaised += _ =>{
-			 if(groundedMoveTimes <= 0.15f)
+			 if(groundedMoveTimes <= 0.12f)
 			 	_comboAddChannel.RaiseEvent();
+			else
+				print(groundedMoveTimes);
 			 groundedMoveTimes = 0;
 		};
 	}

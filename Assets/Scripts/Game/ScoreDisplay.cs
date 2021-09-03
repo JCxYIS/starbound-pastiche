@@ -11,10 +11,12 @@ public class ScoreDisplay : MonoBehaviour
     [SerializeField] Text _lv;
     [SerializeField] Slider _lvSlider;
     [SerializeField] Text _debug;
+    Image _lvSliderFillRect;
 
     [Header("Predefine")]
     [SerializeField] AnimationCurve _scaleCurve;
     [SerializeField] AnimationCurve _rotationCurve;
+    [SerializeField] Color[] _colorsOfSlider;
 
     [Header("Channels")]
     [SerializeField] GameStartChannel _gameStartChannel;
@@ -38,8 +40,27 @@ public class ScoreDisplay : MonoBehaviour
     /// </summary>
     void Update()
     {
-        _score.text = gameController?.score.ToString("000000000") ?? "000000000";
-        _lv.text = gameController?.lv.ToString("") ?? "";
+        if(gameController)
+        {
+            _score.text = gameController.score.ToString("000000000");
+            _lv.text = gameController.lv.ToString("");
+
+            if(gameController.lv == 0)
+                return;
+            int section = (int)(gameController.lv-1) / 10; // e.g. lv.1 => 0, lv.13 => 1, lv.30 => 2
+            float lvSection = (gameController.lv-1) % 10;  // e.g. lv.1 => 0, lv.13 => 2, lv.30 => 9
+            _lvSlider.value =  (lvSection + gameController.lvProgress) / 10;
+            if(!_lvSliderFillRect)
+                _lvSliderFillRect = _lvSlider.fillRect.GetComponent<Image>();
+            _lvSliderFillRect.color = _colorsOfSlider[section];
+        }
+        else
+        {
+            _score.text = "000000000";
+            _lv.text = "";
+            _lvSlider.value = 0;
+
+        }
     }
 
     void OnComboChange(uint combo)

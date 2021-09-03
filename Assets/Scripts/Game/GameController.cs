@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour
     public uint maxCombo = 0;
     public uint steppedFloor = 0;
     public int randomSeed = 0;
+    public float lvProgress;
     [SerializeField] Queue<Floor> floors = new Queue<Floor>();
 
     AudioSource _bgmPlayer;
@@ -95,6 +96,7 @@ public class GameController : MonoBehaviour
             nextLvUpTime = _bgm.length / 30f * lv;
             _lvUpChannel.RaiseEvent(lv);
         }
+        lvProgress = 1 - (nextLvUpTime - _bgmPlayer.time) / (_bgm.length / 30f);
     }
 
     /// <summary>

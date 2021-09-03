@@ -926,8 +926,8 @@ MonoBehaviour:
   _gameStartChannel: {fileID: 11400000, guid: 7aba5a9970275fe41a9ce3e287f615db, type: 2}
   _gameOverChannel: {fileID: 11400000, guid: 98dffee5f96d9b74396a0ea13a9ab0d8, type: 2}
   _lvUpChannel: {fileID: 11400000, guid: ebd2a85b5f834d541a2731bd2f48c1d7, type: 2}
-  minSpeed: 0.019
-  maxSpeed: 0.045
+  minSpeed: 0.0187
+  maxSpeed: 0.0426
   speedCurve:
     serializedVersion: 2
     m_Curve:
@@ -1696,6 +1696,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _colorsOfSlider:
+  - {r: 0.7969534, g: 1, b: 0.759434, a: 1}
+  - {r: 0.99820894, g: 1, b: 0.7028302, a: 1}
+  - {r: 1, g: 0.7122642, b: 0.7122642, a: 1}
+  - {r: 0, g: 0, b: 0, a: 0}
   _gameStartChannel: {fileID: 11400000, guid: 7aba5a9970275fe41a9ce3e287f615db, type: 2}
   _comboChangeChannel: {fileID: 11400000, guid: 02bbd7b9ec7927b4d8d2b314f8f93975, type: 2}
 --- !u!1 &1815947002
@@ -1904,6 +1909,7 @@ MonoBehaviour:
   maxCombo: 0
   steppedFloor: 0
   randomSeed: 0
+  lvProgress: 0
 --- !u!4 &1894931814
 Transform:
   m_ObjectHideFlags: 0
