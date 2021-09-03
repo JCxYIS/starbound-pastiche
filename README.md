@@ -1,12 +1,15 @@
 # {Project: starbound-pastiche}
 
+Made for NCUGC to participate SITCON 2021
+(P.S. The game is not completely done, and I'd never beat this game lol)
+
 When I was a child, I once played a flash game called starbound,
 It was fun and I played it all the time
-The target is simple, jump and don't fell off
+The target is simple, jump on platform and don't fell off
 
 Now as all major browsers and os stop supporting flash,
-the game would no longer be playable.
-What I can do is make a game like that, 
+the game would be no longer be playable.
+What I can do is to make a game like that, 
 so... this is it
 
 
