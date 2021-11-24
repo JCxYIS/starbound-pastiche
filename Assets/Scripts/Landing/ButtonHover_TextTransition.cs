@@ -12,11 +12,8 @@ public class ButtonHover_TextTransition : MonoBehaviour, IPointerEnterHandler, I
     private Color initColor;
 
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
-    void Start()
+
+    void Awake()
     {
         initColor = Text.color;
     }
@@ -29,6 +26,11 @@ public class ButtonHover_TextTransition : MonoBehaviour, IPointerEnterHandler, I
     public void OnPointerExit(PointerEventData eventData)
     {
         Text.color = initColor;
+    }
+
+    void OnDisable()
+    {
+        Text.color = initColor;        
     }
 
     /// <summary>
