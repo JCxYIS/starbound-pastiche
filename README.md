@@ -15,20 +15,18 @@ so... this is it
 
 How to play
 ===
-Arrow Key ow WASD: Move
-Arrow Key or Space: Jump
+- Arrow Key ow WASD: Move
+- Arrow Key or Space: Jump
 
 
 License
 ===
-"Unity Chan" © Unity Technologies Japan/UCL
-Font "Silver" https://poppyworks.itch.io/silver
-Background "Endless Airways" https://opengameart.org/content/pixel-art-parallax-background
-Platform "Pixel Platformer" https://www.kenney.nl/assets/pixel-platformer
-BGM/SFX ripped from flash game "Starbound" http://www.startgames.ws/game/star_bound.html
+- "Unity Chan" © Unity Technologies Japan/UCL
+- Font "Silver" https://poppyworks.itch.io/silver
+- Background "Endless Airways" https://opengameart.org/content/pixel-art-parallax-background
+- Platform "Pixel Platformer" https://www.kenney.nl/assets/pixel-platformer
+- BGM/SFX ripped from flash game "Starbound" http://www.startgames.ws/game/star_bound.html
 
 Developer
 ===
-| ![](https://avatars.githubusercontent.com/u/26219761) | 
-| :--: |
-| [JCxYIS](https://github.com/JCxYIS)|  
+[JCxYIS](https://github.com/JCxYIS)  
