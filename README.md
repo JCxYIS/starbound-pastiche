@@ -16,16 +16,16 @@ so... this is it
 How to play
 ===
 - Arrow Key ow WASD: Move
-- Arrow Key or Space: Jump
+- Arrow Key Up or Space: Jump
 
 
-License
+Disclaimer
 ===
 - "Unity Chan" © Unity Technologies Japan/UCL
 - Font "Silver" https://poppyworks.itch.io/silver
 - Background "Endless Airways" https://opengameart.org/content/pixel-art-parallax-background
 - Platform "Pixel Platformer" https://www.kenney.nl/assets/pixel-platformer
-- BGM/SFX ripped from flash game "Starbound" http://www.startgames.ws/game/star_bound.html
+- BGM/SFX extracted from flash game "Starbound" http://www.startgames.ws/game/star_bound.html
 
 Developer
 ===
