@@ -25,6 +25,7 @@ public class LandingSceneManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        print(GameManager.Instance.Version);
         ChangeState(State.Main);
     }
 
@@ -37,7 +38,7 @@ public class LandingSceneManager : MonoBehaviour
     }
 
 
-
+    /* -------------------------------------------------------------------------- */
 
     public void ChangeState(int stateId)
     {
@@ -52,5 +53,19 @@ public class LandingSceneManager : MonoBehaviour
         {
             Panels[i].gameObject.SetActive(i == (int)state);
         }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                              Socket Stuff                                  */
+    /* -------------------------------------------------------------------------- */
+    
+    public void CreateRoom()
+    {
+        SocketServer.Instance.StartServer();
+    }
+
+    public void JoinRoom()
+    {
+        // TODO
     }
 }
