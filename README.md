@@ -12,6 +12,9 @@ the game would be no longer be playable.
 What I can do is to make a game like that, 
 so... this is it
 
+**(Update v.2)**
+Implement multiplayer feature *(1101 Computer network project - socket programming)*
+
 
 How to play
 ===
