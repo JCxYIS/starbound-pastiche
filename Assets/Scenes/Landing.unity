@@ -1337,6 +1337,8 @@ MonoBehaviour:
   - {fileID: 948138962}
   - {fileID: 278679133}
   - {fileID: 42181120}
+  Room_IpText: {fileID: 1253078341}
+  Room_PlayersText: {fileID: 825845835}
   state: 0
 --- !u!1 &1066813528
 GameObject:
@@ -2384,12 +2386,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 992342361}
         m_TargetAssemblyTypeName: LandingSceneManager, Assembly-CSharp
-        m_MethodName: ChangeState
-        m_Mode: 3
+        m_MethodName: CreateRoom
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3073,7 +3075,7 @@ GameObject:
   - component: {fileID: 2108665177}
   - component: {fileID: 2108665180}
   m_Layer: 5
-  m_Name: Create Room Butt (1)
+  m_Name: Join Room Butt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3142,7 +3144,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2108665178}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 992342361}
+        m_TargetAssemblyTypeName: LandingSceneManager, Assembly-CSharp
+        m_MethodName: JoinRoom
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1084122236}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.InputField, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2108665178
 MonoBehaviour:
   m_ObjectHideFlags: 0

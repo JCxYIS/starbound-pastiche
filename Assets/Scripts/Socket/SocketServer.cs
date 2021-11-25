@@ -5,22 +5,18 @@ using System.Threading;
 using System;
 using System.Net.Sockets;
 using System.Net;
+using System.Text;
 
 /// <summary>
 /// Socket Server.
 /// Will run in another thread
 /// </summary>
-public class SocketServer : MonoSingleton<SocketServer>, IDisposable
+public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
 {
-    /// <summary>
-    /// Run in this thread
-    /// </summary>
-    private Thread updateThread;
-
     /// <summary>
     /// Should continue listening to socket?
     /// </summary>
-    private volatile bool shouldStop;
+    private volatile bool shouldStop = false;
 
     /// <summary>
     /// Server socket endpoint
@@ -36,6 +32,19 @@ public class SocketServer : MonoSingleton<SocketServer>, IDisposable
     /// Socket with client we established
     /// </summary>
     private List<Socket> clientSockets = new List<Socket>();
+
+    /// <summary>
+    /// Server socket thread
+    /// </summary>
+    private Thread serverSocketThread;
+
+    /// <summary>
+    /// Client Socket threads
+    /// </summary>
+    /// <typeparam name="Socket"></typeparam>
+    /// <typeparam name="Thread"></typeparam>
+    /// <returns></returns>
+    private Dictionary<Socket, Thread> clientSocketThread = new Dictionary<Socket, Thread>();
 
     /* -------------------------------------------------------------------------- */
     
@@ -68,36 +77,81 @@ public class SocketServer : MonoSingleton<SocketServer>, IDisposable
     /// <returns>local ip / port</returns>
     public IPEndPoint StartServer()
     {
+        // thread is running
+        if(serverSocketThread != null)
+        {
+            throw new Exception("[Socket] Server Socket is already created");
+        }
+
         // Get host
         IPAddress localIp = GetLocalIp();
         Debug.Log("Ip=" + localIp.ToString());
-        ipEndPoint = new IPEndPoint(localIp, 42069);
-
-        // Create server socket (SOCKET)
-        serverSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        ipEndPoint = new IPEndPoint(localIp, 42069);        
 
         // Create Update thread
-        updateThread = new Thread(ServerUpdate);
-        updateThread.IsBackground = true;
-        updateThread.Start();
+        serverSocketThread = new Thread(ServerSocketThread);
+        serverSocketThread.IsBackground = true;
+        serverSocketThread.Start();
         
         return ipEndPoint;
     }
 
     /// <summary>
-    /// The major code that server runs (on another thread)
+    /// The major code that server socket runs (on another thread)
     /// </summary>
-    private void ServerUpdate()
+    private void ServerSocketThread()
     {
+        // SOCKET
+        serverSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
         // BIND
         serverSocket.Bind(ipEndPoint);
 
         // LISTEN
         serverSocket.Listen(16);
+        Debug.Log("[SOCKETS LISTENING] "+ipEndPoint.Address);
 
-        // ACCEPT
 
-        // TODO.
+        while(!shouldStop)
+        {
+            // ACCEPT
+            Socket newClient = serverSocket.Accept(); // thread will stuck here until connect
+            
+            Debug.Log("[SOCKETS ACCEPTED]");
+            clientSockets.Add(newClient);
+            Thread newClientThread = new Thread(()=>ClientSocketThread(newClient));
+            clientSocketThread.Add(newClient, newClientThread);
+
+            Thread.Sleep(100);
+        }
+    }
+
+    /// <summary>
+    /// Thread of socket communicate with client (one thread per client)
+    /// </summary>
+    private void ClientSocketThread(Socket clientSocket)
+    {
+        byte[] buffer;
+        string receive;
+
+        while(!shouldStop)
+        {
+            buffer = new byte[1024];
+
+            // Read buffer
+            int receiveCount = clientSocket.Receive(buffer);
+            if(receiveCount == 0)
+            {
+                Debug.LogWarning("[SOCKETS EMPTY RECV] Try to reconnect");
+                // TODO reconnect
+                continue;
+            }
+
+            // Encode to string
+            receive = Encoding.ASCII.GetString(buffer, 0, receiveCount);
+            Debug.Log("[SOCKETS GET] "+receive);
+            System.Threading.Thread.Sleep(1);
+        }        
     }
 
     /// <summary>
@@ -107,9 +161,19 @@ public class SocketServer : MonoSingleton<SocketServer>, IDisposable
     {
         shouldStop = true;
 
-        updateThread?.Abort();
-        serverSocket?.Dispose();
+        // close client
         clientSockets.ForEach(s => s?.Dispose());
+        foreach(var key in clientSocketThread)
+        {
+            key.Value?.Abort();
+        }
+        clientSockets = new List<Socket>();
+        clientSocketThread = new Dictionary<Socket, Thread>();
+
+        // close server
+        serverSocketThread?.Abort();
+        serverSocket?.Dispose();
+        serverSocketThread = null;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -117,7 +181,7 @@ public class SocketServer : MonoSingleton<SocketServer>, IDisposable
     /// <summary>
     /// Send message to all clients
     /// </summary>
-    public void BroadcastMessage()
+    public void Send(string message)
     {
         // TODO
     }

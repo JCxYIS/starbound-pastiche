@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LandingSceneManager : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class LandingSceneManager : MonoBehaviour
 
     [Header("Bindings")]
     [SerializeField] RectTransform[] Panels;
+    [SerializeField] Text Room_IpText;
+    [SerializeField] Text Room_PlayersText;
 
 
     [Header("Variables")]
@@ -34,7 +38,11 @@ public class LandingSceneManager : MonoBehaviour
     /// </summary>
     void Update()
     {
-        
+        // DEBUG
+        if(Input.GetKeyDown(KeyCode.F7))
+        {
+            SceneManager.LoadScene("Test");
+        }
     }
 
 
@@ -56,16 +64,39 @@ public class LandingSceneManager : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------- */
+
+    public void GoGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    /* -------------------------------------------------------------------------- */
     /*                              Socket Stuff                                  */
     /* -------------------------------------------------------------------------- */
     
     public void CreateRoom()
     {
-        SocketServer.Instance.StartServer();
+        Room_IpText.text = "IP: ???";
+        Room_PlayersText.text = "Now Creating Room...";
+        ChangeState(State.Room);
+        var hostAddress = SocketServer.Instance.StartServer();
+        Room_IpText.text = "IP: "+hostAddress.Address.ToString();
+        Room_PlayersText.text = ""; // TODO
     }
 
-    public void JoinRoom()
+    public void JoinRoom(InputField ipInput)
     {
-        // TODO
+        Room_PlayersText.text = "Now Connecting...";
+        Room_IpText.text = "IP: "+ipInput.text;
+        ChangeState(State.Room);
+        SocketClient.Instance.TryConnect(ipInput.text, 42069);
+        Room_PlayersText.text = ""; // TODO
+    }
+
+    public void ExitRoom()
+    {
+        SocketServer.Instance.Dispose();
+        SocketClient.Instance.Dispose();
+        ChangeState(State.Main);
     }
 }

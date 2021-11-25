@@ -6,5 +6,5 @@ public class GameManager : MonoSingleton<GameManager>
 {
     public string Version => "v.2.0";
 
-    // public SocketServer SocketServer;
+    public MonoBehaviour SocketServer;
 }
