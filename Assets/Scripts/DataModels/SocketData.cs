@@ -6,7 +6,18 @@ using System;
 [Serializable]
 public class SocketData
 {
+    /// <summary>
+    /// By who?
+    /// </summary>
     public string Author;
+
+    /// <summary>
+    /// The type of this message
+    /// </summary>
     public string Type;
+
+    /// <summary>
+    /// Usually serialized Json strings
+    /// </summary>
     public string Content;
 }
