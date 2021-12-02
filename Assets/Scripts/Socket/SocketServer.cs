@@ -207,6 +207,7 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
         {
             client.Send(sendData,sendData.Length, SocketFlags.None);
         }
+        Debug.Log("[SOCKETS SEND] (To ALL) "+sendData);
     }
 
     public void RegisterRoom(IRoom listener)

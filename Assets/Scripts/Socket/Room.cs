@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class Room : MonoSingleton<Room>, IRoom
 {
+    /* -------------------------------------------------------------------------- */
+    /*                                  Variables                                 */
+    /* -------------------------------------------------------------------------- */
+
     /// <summary>
     /// room data
     /// </summary>
@@ -25,7 +29,20 @@ public class Room : MonoSingleton<Room>, IRoom
     /// socket used to send / receive data
     /// </summary>
     private ISocketBase socket;
+    
 
+    /* -------------------------------------------------------------------------- */
+    /*                                   Events                                   */
+    /* -------------------------------------------------------------------------- */
+
+    /// <summary>
+    /// (Name, Content)
+    /// </summary>
+    public event System.Action<string, string> OnChat;
+
+
+    /* -------------------------------------------------------------------------- */
+    /*                             Monobehaviour Func                             */
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
@@ -46,6 +63,8 @@ public class Room : MonoSingleton<Room>, IRoom
         
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                                 Public Func                                */
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
@@ -77,9 +96,24 @@ public class Room : MonoSingleton<Room>, IRoom
     /// <param name="content"></param>
     public void SendMessage(string msgtype, string content)
     {
+        SocketMessage message = new SocketMessage();
+        message.Author = MyName;
+        message.Type = msgtype;
+        message.Content = content;
 
+        print($"[ROOM SENDMSG] {message.Author} : ({message.Type}) {message.Content}");
+        socket.Send(message);
     }
 
+    public void Destroy()
+    {
+        socket.Dispose();
+        Destroy(gameObject);
+        print("[ROOM] Destroyed");
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                             Signal from socket                             */
     /* -------------------------------------------------------------------------- */
 
     public void OnRoomUpdate(RoomData roomData)
@@ -90,16 +124,22 @@ public class Room : MonoSingleton<Room>, IRoom
 
     public void OnReceiveMessage(SocketMessage message)
     {
-        print($"[ROOM MSG] {message.Author } : ({message.Type}) {message.Content}");
-        // TODO receive msg then ?
+        print($"[ROOM GETMSG] {message.Author} : ({message.Type}) {message.Content}");
+
+        // handle msg
+        switch(message.Type)
+        {
+            default:
+                Debug.LogWarning("[ROOM GETMSG] Message type is undefined: " + message.Type);
+                break;
+
+            case "Chat":
+                OnChat?.Invoke(message.Author, message.Content);
+                break;
+        }
     }
 
     /* -------------------------------------------------------------------------- */
 
-    public void Destroy()
-    {
-        socket.Dispose();
-        Destroy(gameObject);
-        print("[ROOM] Destroyed");
-    }
+    
 }

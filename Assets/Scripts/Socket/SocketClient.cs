@@ -111,7 +111,8 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
         string str = JsonUtility.ToJson(message);
         byte[] sendData = new byte[1024];
         sendData = Encoding.ASCII.GetBytes(str);
-        socket.Send(sendData,sendData.Length, SocketFlags.None);
+        socket.Send(sendData, sendData.Length, SocketFlags.None);
+        Debug.Log("[SOCKETC SEND] "+sendData);
     }
 
     public void Dispose()

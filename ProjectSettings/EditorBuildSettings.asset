@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Game.unity
     guid: 4804ad976e46f38428bcd8b8aa3d8f26
   - enabled: 1
-    path: Assets/Scenes/Test.unity
+    path: Assets/Scenes/Test_Chat.unity
     guid: 99ed5b991349a4f45b27c47b1416f1b5
   m_configObjects: {}

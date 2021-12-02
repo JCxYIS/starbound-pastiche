@@ -41,7 +41,7 @@ public class LandingSceneManager : MonoBehaviour
         // DEBUG
         if(Input.GetKeyDown(KeyCode.F7))
         {
-            SceneManager.LoadScene("Test");
+            SceneManager.LoadScene("Test_Chat");
         }
     }
 
