@@ -20,6 +20,8 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
 
     private IRoom room;
 
+    private Queue<Action> threadTasks = new Queue<Action>();
+
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
@@ -36,6 +38,19 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
     void OnDestroy()
     {
         Dispose();
+    }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update()
+    {
+        lock(threadTasks)
+        {
+            if(threadTasks.Count == 0) 
+                return;
+            threadTasks.Dequeue().Invoke();
+        }
     }
 
     /* -------------------------------------------------------------------------- */
@@ -90,11 +105,14 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
             try
             {
                 var msg = JsonUtility.FromJson<SocketMessage>(receive);
-                room?.OnReceiveMessage(msg);
+                lock(threadTasks)
+                {
+                    threadTasks.Enqueue(()=>room?.OnReceiveMessage(msg));
+                }
             }
-            catch
+            catch(Exception e)
             {
-                Debug.LogError("Failed to parse SocketMessage string: " + receive);
+                Debug.LogError("Failed to parse SocketMessage: "+ e +"\nMSG=" + receive);
             }
 
             System.Threading.Thread.Sleep(1);

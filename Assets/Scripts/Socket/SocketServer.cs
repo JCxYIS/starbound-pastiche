@@ -51,6 +51,13 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
     /// <returns></returns>
     private Dictionary<Socket, Thread> clientSocketThread = new Dictionary<Socket, Thread>();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="Action"></typeparam>
+    /// <returns></returns>
+    private Queue<Action> threadTasks = new Queue<Action>();
+
     /* -------------------------------------------------------------------------- */
     
     /// <summary>
@@ -67,6 +74,19 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
     void OnDestroy()
     {
         Dispose();
+    }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update()
+    {
+        lock(threadTasks)
+        {
+            if(threadTasks.Count == 0) 
+                return;
+            threadTasks.Dequeue().Invoke();
+        }
     }
 
     /* -------------------------------------------------------------------------- */
@@ -160,7 +180,10 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             try
             {
                 var msg = JsonUtility.FromJson<SocketMessage>(receive);
-                room?.OnReceiveMessage(msg);
+                lock(threadTasks)
+                {
+                    threadTasks.Enqueue(()=>room?.OnReceiveMessage(msg));
+                }
             }
             catch
             {

@@ -79,12 +79,14 @@ public class Room : MonoSingleton<Room>, IRoom
         {
             var ipEndpoint = SocketServer.Instance.StartServer();
             socket = SocketServer.Instance;
+            socket.RegisterRoom(this);
             return ipEndpoint.Address.ToString();
         }
         else
         {
             SocketClient.Instance.TryConnect(ip, 42069);
             socket = SocketClient.Instance;
+            socket.RegisterRoom(this);
             return ip;
         }
     }
