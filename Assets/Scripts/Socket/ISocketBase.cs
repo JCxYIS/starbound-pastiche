@@ -2,5 +2,6 @@ using System;
 
 interface ISocketBase : IDisposable
 {
-    void Send(string message);
+    void RegisterRoom(IRoom listener);
+    void Send(SocketMessage message);
 }

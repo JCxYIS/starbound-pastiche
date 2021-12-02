@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 [Serializable]
-public class SocketData
+public class SocketMessage
 {
     /// <summary>
     /// By who?

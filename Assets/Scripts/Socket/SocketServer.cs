@@ -39,6 +39,11 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
     private Thread serverSocketThread;
 
     /// <summary>
+    /// Room
+    /// </summary>
+    private IRoom room;
+
+    /// <summary>
     /// Client Socket threads
     /// </summary>
     /// <typeparam name="Socket"></typeparam>
@@ -150,6 +155,18 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             // Encode to string
             receive = Encoding.ASCII.GetString(buffer, 0, receiveCount);
             Debug.Log("[SOCKETS GET] "+receive);
+
+            // Parse Message
+            try
+            {
+                var msg = JsonUtility.FromJson<SocketMessage>(receive);
+                room?.OnReceiveMessage(msg);
+            }
+            catch
+            {
+                Debug.LogError("Failed to parse SocketMessage string: " + receive);
+            }
+
             System.Threading.Thread.Sleep(1);
         }        
     }
@@ -179,11 +196,22 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
-    /// Send message to all clients
+    /// Send / Broadcast message to ALL clients
     /// </summary>
-    public void Send(string message)
+    public void Send(SocketMessage message)
     {
-        // TODO
+        string str = JsonUtility.ToJson(message);
+        byte[] sendData = new byte[1024];
+        sendData = Encoding.ASCII.GetBytes(str);
+        foreach(var client in clientSockets)
+        {
+            client.Send(sendData,sendData.Length, SocketFlags.None);
+        }
+    }
+
+    public void RegisterRoom(IRoom listener)
+    {
+        room = listener;
     }
 
     /* -------------------------------------------------------------------------- */

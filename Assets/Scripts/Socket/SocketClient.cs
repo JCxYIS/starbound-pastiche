@@ -15,7 +15,10 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
     private volatile bool shouldStop = false;
 
     private Socket socket;
+
     private Thread thread;
+
+    private IRoom room;
 
     /* -------------------------------------------------------------------------- */
 
@@ -82,16 +85,33 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
             // Encode to string
             receive = Encoding.ASCII.GetString(buffer, 0, receiveCount);
             Debug.Log("[SOCKETC GET] "+receive);
-            System.Threading.Thread.Sleep(1);
 
+            // Parse Message
+            try
+            {
+                var msg = JsonUtility.FromJson<SocketMessage>(receive);
+                room?.OnReceiveMessage(msg);
+            }
+            catch
+            {
+                Debug.LogError("Failed to parse SocketMessage string: " + receive);
+            }
+
+            System.Threading.Thread.Sleep(1);
         }
     }
 
-    public void Send(string message)
+    public void RegisterRoom(IRoom listener)
     {
+        room = listener;
+    }
+
+    public void Send(SocketMessage message)
+    {
+        string str = JsonUtility.ToJson(message);
         byte[] sendData = new byte[1024];
-        sendData = Encoding.ASCII.GetBytes(message);
-        socket.Send(sendData,sendData.Length,SocketFlags.None);
+        sendData = Encoding.ASCII.GetBytes(str);
+        socket.Send(sendData,sendData.Length, SocketFlags.None);
     }
 
     public void Dispose()
@@ -99,5 +119,5 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
         thread.Abort();
         socket.Dispose();
         thread = null;
-    }
+    }    
 }

@@ -79,24 +79,27 @@ public class LandingSceneManager : MonoBehaviour
         Room_IpText.text = "IP: ???";
         Room_PlayersText.text = "Now Creating Room...";
         ChangeState(State.Room);
-        var hostAddress = SocketServer.Instance.StartServer();
-        Room_IpText.text = "IP: "+hostAddress.Address.ToString();
+
+        var ip = Room.Instance.CreateRoom(isHost: true, "");
+        Room_IpText.text = "IP: " + ip;
         Room_PlayersText.text = ""; // TODO
     }
 
     public void JoinRoom(InputField ipInput)
     {
         Room_PlayersText.text = "Now Connecting...";
-        Room_IpText.text = "IP: "+ipInput.text;
         ChangeState(State.Room);
-        SocketClient.Instance.TryConnect(ipInput.text, 42069);
+        
+        var ip = Room.Instance.CreateRoom(isHost: false, ipInput.text);
+        Room_IpText.text = "IP: " + ip;
         Room_PlayersText.text = ""; // TODO
     }
 
     public void ExitRoom()
     {
-        SocketServer.Instance.Dispose();
-        SocketClient.Instance.Dispose();
+        Room.Instance.Destroy();
         ChangeState(State.Main);
     }
+
+    /* -------------------------------------------------------------------------- */
 }
