@@ -217,7 +217,6 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
         serverSocketThread?.Abort();
         serverSocket?.Dispose();
         serverSocketThread = null;
-
     }
 
     /* -------------------------------------------------------------------------- */

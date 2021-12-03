@@ -80,6 +80,7 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
 
         // CONNECT
         socket.Connect(host);
+        print("[SOCKETC Connected]");
 
         // read
         byte[] buffer = new byte[1024];

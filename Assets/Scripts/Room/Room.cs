@@ -23,7 +23,9 @@ public class Room : MonoSingleton<Room>, IRoom
     /// <summary>
     /// my name
     /// </summary>
-    public string MyName;
+    public string MyName = "";
+
+    public bool IsHost = false;
 
     /// <summary>
     /// socket used to send / receive data
