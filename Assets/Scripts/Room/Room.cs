@@ -115,6 +115,7 @@ public class Room : MonoSingleton<Room>, IRoom
             }
 
             roomData.Users.Add(new RoomUser(MyName));
+            IsHost = isHost;
         }
         catch(System.Exception e)
         {
@@ -125,12 +126,17 @@ public class Room : MonoSingleton<Room>, IRoom
     }
     
     /// <summary>
-    /// Send Message upwards
+    /// Send Message to socket
     /// </summary>
     /// <param name="msgtype"></param>
     /// <param name="content"></param>
     public void SendMessage(string msgtype, string content)
     {
+        if(socket == null)
+        {
+            throw new System.Exception("[Room] Socket not init!");
+        }
+
         SocketMessage message = new SocketMessage();
         message.Author = MyName;
         message.Type = msgtype;
@@ -176,6 +182,13 @@ public class Room : MonoSingleton<Room>, IRoom
 
             case "Chat":
                 OnChat?.Invoke(message.Author, message.Content);
+                break;
+
+            case "GoGame":
+                GameData gameData = JsonUtility.FromJson<GameData>(message.Content);
+                SceneManager.LoadSceneAsync("Game").completed += ac =>{
+                    FindObjectOfType<GameController>().Init(gameData);
+                };
                 break;
         }
     }

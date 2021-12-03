@@ -17,6 +17,7 @@ public class LandingSceneManager : MonoBehaviour
     [SerializeField] RectTransform[] Panels;
     [SerializeField] Text Room_IpText;
     [SerializeField] Text Room_PlayersText;
+    [SerializeField] Button Room_PlayButton;
 
 
     [Header("Variables")]
@@ -47,6 +48,7 @@ public class LandingSceneManager : MonoBehaviour
         // 
         if(state == State.Room)
         {
+            Room_PlayButton.gameObject.SetActive(Room.Instance.IsHost);                        
             Room_IpText.text = "IP: " + Room.Instance.RoomData.Ip;
             Room_PlayersText.text = "<b>---Players---</b>\n"; 
             Room.Instance.RoomData.Users.ForEach(u => Room_PlayersText.text += u.Name + "\n");
@@ -74,8 +76,9 @@ public class LandingSceneManager : MonoBehaviour
     /* -------------------------------------------------------------------------- */
 
     public void GoGame()
-    {
-        SceneManager.LoadScene("Game");
+    {        
+        Room.Instance.SendMessage("GoGame", JsonUtility.ToJson(new GameData()));
+        // SceneManager.LoadScene("Game");
     }
 
     /* -------------------------------------------------------------------------- */

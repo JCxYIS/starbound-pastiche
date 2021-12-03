@@ -44,14 +44,22 @@ public class GameController : MonoBehaviour
 
 
     /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    public void Init(GameData gameData)
+    {
+        randomSeed = gameData.RandomSeed;
+    }
+
+    /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
     /// </summary>
     void Start()
     {
         // init random
-        if(randomSeed == 0)
-            randomSeed = Random.Range(int.MinValue, int.MaxValue);
+        // if(randomSeed == 0)
+        //     randomSeed = Random.Range(int.MinValue, int.MaxValue);
         Random.InitState(randomSeed);
 
         // init floors
