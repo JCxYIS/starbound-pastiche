@@ -142,7 +142,7 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             // ACCEPT
             Socket newClient = serverSocket.Accept(); // thread will stuck here until connect
             
-            Debug.Log("[SOCKETS ACCEPTED]");
+            Debug.Log("[SOCKETS ACCEPTED] "+newClient.AddressFamily);
             clientSockets.Add(newClient);
             Thread newClientThread = new Thread(()=>ClientSocketThread(newClient));
             clientSocketThread.Add(newClient, newClientThread);
@@ -185,10 +185,12 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
                 {
                     threadTasks.Enqueue(()=>room?.OnReceiveMessage(msg));
                 }
+                // broadcast to every clients
+                Send(msg);
             }
-            catch
+            catch(Exception e)
             {
-                Debug.LogError("Failed to parse SocketMessage string: " + receive);
+                Debug.LogError("[SOCKETS] Failed to parse SocketMessage: "+ e +"\nMSG=" + receive);
             }
 
             System.Threading.Thread.Sleep(1);
@@ -231,6 +233,13 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
         {
             client.Send(sendData,sendData.Length, SocketFlags.None);
         }
+
+        // send a message upwards to myself
+        lock(threadTasks)
+        {
+            threadTasks.Enqueue(()=>room?.OnReceiveMessage(message));
+        }
+        
         Debug.Log("[SOCKETS SEND] (To ALL) "+sendData);
     }
 

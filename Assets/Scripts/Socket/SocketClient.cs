@@ -112,7 +112,7 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
             }
             catch(Exception e)
             {
-                Debug.LogError("Failed to parse SocketMessage: "+ e +"\nMSG=" + receive);
+                Debug.LogError("[SOCKETC] Failed to parse SocketMessage: "+ e +"\nMSG=" + receive);
             }
 
             System.Threading.Thread.Sleep(1);

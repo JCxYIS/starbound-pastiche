@@ -29,6 +29,8 @@ public class Room : MonoSingleton<Room>, IRoom
     /// socket used to send / receive data
     /// </summary>
     private ISocketBase socket;
+
+    private ChatPanel chatPanel;
     
 
     /* -------------------------------------------------------------------------- */
@@ -53,6 +55,10 @@ public class Room : MonoSingleton<Room>, IRoom
     {
         MyName =  "Player" + Random.Range(0, short.MaxValue); // FIXME should be unique id
         DontDestroyOnLoad(gameObject);
+
+        chatPanel = JC.Utility.ResourcesUtil.InstantiateFromResources("Prefabs/ChatPanel").GetComponent<ChatPanel>();
+        chatPanel.transform.parent = transform;
+        chatPanel.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -60,7 +66,10 @@ public class Room : MonoSingleton<Room>, IRoom
     /// </summary>
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            chatPanel.gameObject.SetActive(!chatPanel.gameObject.activeInHierarchy);
+        }
     }
 
     /* -------------------------------------------------------------------------- */
@@ -102,6 +111,7 @@ public class Room : MonoSingleton<Room>, IRoom
         message.Author = MyName;
         message.Type = msgtype;
         message.Content = content;
+        // message.Timestamp = System.DateTime.UtcNow;
 
         print($"[ROOM SENDMSG] {message.Author} : ({message.Type}) {message.Content}");
         socket.Send(message);
