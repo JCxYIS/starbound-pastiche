@@ -146,6 +146,7 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             clientSockets.Add(newClient);
             Thread newClientThread = new Thread(()=>ClientSocketThread(newClient));
             clientSocketThread.Add(newClient, newClientThread);
+            newClientThread.Start();
 
             Thread.Sleep(100);
         }

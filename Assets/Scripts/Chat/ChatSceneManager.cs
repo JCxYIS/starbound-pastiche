@@ -39,6 +39,7 @@ public class ChatSceneManager : MonoBehaviour
     public void SendChat(InputField inputField)
     {
         Room.Instance.SendMessage("Chat", inputField.text);
+        inputField.text = "";
     }
 
     void OnChat(string author, string msg)
