@@ -263,8 +263,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 992342361}
         m_TargetAssemblyTypeName: LandingSceneManager, Assembly-CSharp
-        m_MethodName: ChangeState
-        m_Mode: 3
+        m_MethodName: GoGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1340,6 +1340,7 @@ MonoBehaviour:
   - {fileID: 42181120}
   Room_IpText: {fileID: 1253078341}
   Room_PlayersText: {fileID: 825845835}
+  Room_PlayButton: {fileID: 183705170}
   state: 0
 --- !u!1 &1066813528
 GameObject:
