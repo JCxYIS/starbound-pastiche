@@ -63,9 +63,9 @@ public class Room : MonoSingleton<Room>, IRoom
         chatPanel.gameObject.SetActive(false);
 
         OnDispose += ()=>{
-            // FIXME on dispose has bug in it?
-            SceneManager.LoadScene("Landing");
-            // PromptBox.CreateMessageBox("Disconnected from Room...");
+            SceneManager.LoadSceneAsync("Landing").completed += a => {
+                PromptBox.CreateMessageBox("Disconnected from Room!");
+            };
         };
     }
 
@@ -92,25 +92,34 @@ public class Room : MonoSingleton<Room>, IRoom
     /// <returns>ip</returns>
     public void CreateRoom(bool isHost, string ip)
     {
-        // create a fake new room data for init, until the server update this
-        roomData = new RoomData();
-
-        if(isHost)
+        try
         {
-            var ipEndpoint = SocketServer.Instance.StartServer();
-            socket = SocketServer.Instance;
-            socket.RegisterRoom(this);
-            roomData.Ip =  ipEndpoint.Address.ToString();
-        }
-        else
-        {
-            SocketClient.Instance.TryConnect(ip, 42069);
-            socket = SocketClient.Instance;
-            socket.RegisterRoom(this);
-            roomData.Ip = ip;
-        }
+            // create a fake new room data for init, until the server update this
+            roomData = new RoomData();
 
-        roomData.Users.Add(new RoomUser(MyName));
+            if(isHost)
+            {
+                var ipEndpoint = SocketServer.Instance.StartServer();
+                socket = SocketServer.Instance;
+                socket.RegisterRoom(this);
+                roomData.Ip =  ipEndpoint.Address.ToString();
+            }
+            else
+            {
+                SocketClient.Instance.TryConnect(ip, 42069);
+                socket = SocketClient.Instance;
+                socket.RegisterRoom(this);
+                roomData.Ip = ip;
+            }
+
+            roomData.Users.Add(new RoomUser(MyName));
+        }
+        catch(System.Exception e)
+        {
+            Debug.LogError(e);
+            Debug.LogError("Error while creating room, now dispose.");
+            Dispose();
+        }
     }
     
     /// <summary>
@@ -133,9 +142,13 @@ public class Room : MonoSingleton<Room>, IRoom
     public void Dispose()
     {
         socket?.Dispose(); 
-        OnDispose?.Invoke();  
-        Destroy(gameObject);
-        print("[ROOM] Destroyed");
+
+        if(gameObject)
+        {
+            OnDispose?.Invoke();  
+            Destroy(gameObject);
+            print("[ROOM] Destroyed");
+        }
     }
 
     /* -------------------------------------------------------------------------- */

@@ -138,9 +138,9 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
 
     public void Dispose()
     {
-        socket.Dispose();
+        socket?.Dispose();
         room.OnSocketDispose();
-        thread.Abort();
+        thread?.Abort();
         thread = null;
     }    
 }

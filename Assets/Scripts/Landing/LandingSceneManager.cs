@@ -84,19 +84,14 @@ public class LandingSceneManager : MonoBehaviour
     
     public void CreateRoom()
     {
-        Room_IpText.text = "IP: ???";
-        Room_PlayersText.text = "Now Creating Room...";
-        ChangeState(State.Room);
-
         Room.Instance.CreateRoom(isHost: true, "");
+        ChangeState(State.Room);
     }
 
     public void JoinRoom(InputField ipInput)
     {
-        Room_PlayersText.text = "Now Connecting...";
-        ChangeState(State.Room);
-        
         Room.Instance.CreateRoom(isHost: false, ipInput.text);
+        ChangeState(State.Room);
     }
 
     public void ExitRoom()
