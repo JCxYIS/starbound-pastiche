@@ -174,7 +174,7 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             }
 
             // Encode to string
-            receive = Encoding.ASCII.GetString(buffer, 0, receiveCount);
+            receive = Encoding.UTF8.GetString(buffer, 0, receiveCount);
             Debug.Log("[SOCKETS GET] "+receive);
 
             // Parse Message
@@ -225,7 +225,7 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
     {
         string str = JsonUtility.ToJson(message);
         byte[] sendData = new byte[1024];
-        sendData = Encoding.ASCII.GetBytes(str);
+        sendData = Encoding.UTF8.GetBytes(str);
         foreach(var client in clientSockets)
         {
             client.Send(sendData,sendData.Length, SocketFlags.None);

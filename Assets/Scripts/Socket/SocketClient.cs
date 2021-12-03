@@ -92,13 +92,13 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
             int receiveCount = socket.Receive(buffer);  // frz here until buffer full lmao
             if(receiveCount == 0)
             {
-                Debug.LogWarning("[SOCKETC EMPTY RECV] Try to reconnect");
+                Debug.LogWarning("[SOCKETC EMPTY RECV] Connection Failed");
                 // TODO reconnect
                 continue;
             }
 
             // Encode to string
-            receive = Encoding.ASCII.GetString(buffer, 0, receiveCount);
+            receive = Encoding.UTF8.GetString(buffer, 0, receiveCount);
             Debug.Log("[SOCKETC GET] "+receive);
 
             // Parse Message
@@ -128,7 +128,7 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
     {
         string str = JsonUtility.ToJson(message);
         byte[] sendData = new byte[1024];
-        sendData = Encoding.ASCII.GetBytes(str);
+        sendData = Encoding.UTF8.GetBytes(str);
         socket.Send(sendData, sendData.Length, SocketFlags.None);
         Debug.Log("[SOCKETC SEND] "+sendData);
     }
