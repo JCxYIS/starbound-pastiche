@@ -168,9 +168,10 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             int receiveCount = clientSocket.Receive(buffer);
             if(receiveCount == 0)
             {
-                Debug.LogWarning("[SOCKETS EMPTY RECV] Try to reconnect");
-                // TODO reconnect
-                continue;
+                Debug.LogWarning("[SOCKETS EMPTY RECV] A Client Socket Disconnected");
+                clientSocket.Dispose();
+                clientSocketThread.Remove(clientSocket);                
+                return;
             }
 
             // Encode to string
@@ -210,10 +211,13 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
         clientSockets = new List<Socket>();
         clientSocketThread = new Dictionary<Socket, Thread>();
 
+        room.OnSocketDispose();
+        
         // close server
         serverSocketThread?.Abort();
         serverSocket?.Dispose();
         serverSocketThread = null;
+
     }
 
     /* -------------------------------------------------------------------------- */

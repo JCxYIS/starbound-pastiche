@@ -92,9 +92,12 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
             int receiveCount = socket.Receive(buffer);  // frz here until buffer full lmao
             if(receiveCount == 0)
             {
-                Debug.LogWarning("[SOCKETC EMPTY RECV] Connection Failed");
-                // TODO reconnect
-                continue;
+                Debug.LogWarning("[SOCKETC EMPTY RECV] Socket Disconnected");
+                lock(threadTasks)
+                {
+                    threadTasks.Enqueue(()=>Dispose());
+                }
+                return;
             }
 
             // Encode to string
@@ -135,8 +138,9 @@ public class SocketClient : MonoSingleton<SocketClient>, ISocketBase
 
     public void Dispose()
     {
-        thread.Abort();
         socket.Dispose();
+        room.OnSocketDispose();
+        thread.Abort();
         thread = null;
     }    
 }

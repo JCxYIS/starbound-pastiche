@@ -9,4 +9,6 @@ public interface IRoom
 
     // -- Signal ---
     void OnReceiveMessage(SocketMessage message);
+
+    void OnSocketDispose();
 }

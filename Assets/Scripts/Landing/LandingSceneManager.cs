@@ -97,7 +97,7 @@ public class LandingSceneManager : MonoBehaviour
 
     public void ExitRoom()
     {
-        Room.Instance.Destroy();
+        Room.Instance.Dispose();
         ChangeState(State.Main);
     }
 

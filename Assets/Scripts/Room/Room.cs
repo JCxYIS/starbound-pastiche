@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class Room : MonoSingleton<Room>, IRoom
 {
@@ -38,6 +39,11 @@ public class Room : MonoSingleton<Room>, IRoom
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
+    /// On Destroy
+    /// </summary>
+    public event System.Action OnDispose;
+
+    /// <summary>
     /// (Name, Content)
     /// </summary>
     public event System.Action<string, string> OnChat;
@@ -59,6 +65,11 @@ public class Room : MonoSingleton<Room>, IRoom
         chatPanel = JC.Utility.ResourcesUtil.InstantiateFromResources("Prefabs/ChatPanel").GetComponent<ChatPanel>();
         chatPanel.transform.parent = transform;
         chatPanel.gameObject.SetActive(false);
+
+        OnDispose += ()=>{
+            SceneManager.LoadScene("Landing");
+            // PromptBox.CreateMessageBox("Disconnected from Room...");
+        };
     }
 
     /// <summary>
@@ -117,9 +128,10 @@ public class Room : MonoSingleton<Room>, IRoom
         socket.Send(message);
     }
 
-    public void Destroy()
+    public void Dispose()
     {
-        socket.Dispose();
+        socket?.Dispose(); 
+        OnDispose?.Invoke();  
         Destroy(gameObject);
         print("[ROOM] Destroyed");
     }
@@ -149,6 +161,13 @@ public class Room : MonoSingleton<Room>, IRoom
                 OnChat?.Invoke(message.Author, message.Content);
                 break;
         }
+    }
+
+    public void OnSocketDispose()
+    {
+        print("Socket has disposed!");
+        socket = null;
+        Dispose();
     }
 
     /* -------------------------------------------------------------------------- */
