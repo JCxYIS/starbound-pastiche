@@ -6,5 +6,6 @@ using System;
 [Serializable]
 public class RoomData
 {
-    public List<RoomUser> Users { get; set; }
+    public string Ip = "undefined";
+    public List<RoomUser> Users = new List<RoomUser>();
 }

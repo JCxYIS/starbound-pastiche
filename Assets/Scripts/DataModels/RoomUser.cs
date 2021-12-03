@@ -6,5 +6,10 @@ using System;
 [Serializable]
 public class RoomUser 
 {
-    public string Name { get; set; }
+    public string Name;
+
+    public RoomUser(string myname)
+    {
+        this.Name = myname;
+    }
 }

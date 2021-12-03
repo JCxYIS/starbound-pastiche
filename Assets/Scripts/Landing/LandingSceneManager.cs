@@ -43,6 +43,14 @@ public class LandingSceneManager : MonoBehaviour
         // {
         //     SceneManager.LoadScene("Test_Chat");
         // }
+
+        // 
+        if(state == State.Room)
+        {
+            Room_IpText.text = "IP: " + Room.Instance.RoomData.Ip;
+            Room_PlayersText.text = "<b>---Players---</b>\n"; 
+            Room.Instance.RoomData.Users.ForEach(u => Room_PlayersText.text += u.Name + "\n");
+        }
     }
 
 
@@ -80,9 +88,7 @@ public class LandingSceneManager : MonoBehaviour
         Room_PlayersText.text = "Now Creating Room...";
         ChangeState(State.Room);
 
-        var ip = Room.Instance.CreateRoom(isHost: true, "");
-        Room_IpText.text = "IP: " + ip;
-        Room_PlayersText.text = ""; // TODO
+        Room.Instance.CreateRoom(isHost: true, "");
     }
 
     public void JoinRoom(InputField ipInput)
@@ -90,9 +96,7 @@ public class LandingSceneManager : MonoBehaviour
         Room_PlayersText.text = "Now Connecting...";
         ChangeState(State.Room);
         
-        var ip = Room.Instance.CreateRoom(isHost: false, ipInput.text);
-        Room_IpText.text = "IP: " + ip;
-        Room_PlayersText.text = ""; // TODO
+        Room.Instance.CreateRoom(isHost: false, ipInput.text);
     }
 
     public void ExitRoom()

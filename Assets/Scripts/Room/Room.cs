@@ -12,7 +12,6 @@ public class Room : MonoSingleton<Room>, IRoom
     /// <summary>
     /// room data
     /// </summary>
-    [ReadOnly]
     [SerializeField]
     RoomData roomData;
 
@@ -53,11 +52,8 @@ public class Room : MonoSingleton<Room>, IRoom
     /*                             Monobehaviour Func                             */
     /* -------------------------------------------------------------------------- */
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
-    void Start()
+
+    void Awake()
     {
         MyName =  "Player" + Random.Range(0, short.MaxValue); // FIXME should be unique id
         DontDestroyOnLoad(gameObject);
@@ -67,6 +63,7 @@ public class Room : MonoSingleton<Room>, IRoom
         chatPanel.gameObject.SetActive(false);
 
         OnDispose += ()=>{
+            // FIXME on dispose has bug in it?
             SceneManager.LoadScene("Landing");
             // PromptBox.CreateMessageBox("Disconnected from Room...");
         };
@@ -93,22 +90,27 @@ public class Room : MonoSingleton<Room>, IRoom
     /// <param name="isHost"></param>
     /// <param name="ip">if isHost = true, this param is not required</param>
     /// <returns>ip</returns>
-    public string CreateRoom(bool isHost, string ip)
+    public void CreateRoom(bool isHost, string ip)
     {
+        // create a fake new room data for init, until the server update this
+        roomData = new RoomData();
+
         if(isHost)
         {
             var ipEndpoint = SocketServer.Instance.StartServer();
             socket = SocketServer.Instance;
             socket.RegisterRoom(this);
-            return ipEndpoint.Address.ToString();
+            roomData.Ip =  ipEndpoint.Address.ToString();
         }
         else
         {
             SocketClient.Instance.TryConnect(ip, 42069);
             socket = SocketClient.Instance;
             socket.RegisterRoom(this);
-            return ip;
+            roomData.Ip = ip;
         }
+
+        roomData.Users.Add(new RoomUser(MyName));
     }
     
     /// <summary>
