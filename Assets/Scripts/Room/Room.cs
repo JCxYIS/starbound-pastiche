@@ -66,7 +66,7 @@ public class Room : MonoSingleton<Room>, IRoom
     /// </summary>
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))
+        if(Input.GetKeyDown(KeyCode.F7))
         {
             chatPanel.gameObject.SetActive(!chatPanel.gameObject.activeInHierarchy);
         }

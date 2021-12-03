@@ -181,11 +181,8 @@ public class SocketServer : MonoSingleton<SocketServer>, ISocketBase
             try
             {
                 var msg = JsonUtility.FromJson<SocketMessage>(receive);
-                lock(threadTasks)
-                {
-                    threadTasks.Enqueue(()=>room?.OnReceiveMessage(msg));
-                }
-                // broadcast to every clients
+
+                // broadcast to every clients including myself
                 Send(msg);
             }
             catch(Exception e)
