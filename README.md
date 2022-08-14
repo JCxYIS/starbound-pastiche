@@ -1,5 +1,7 @@
 # {Project: starbound-pastiche}
 
+Play Online: https://jcxyis.itch.io/starbounds
+
 Made for NCUGC to participate SITCON 2021
 (P.S. The game is not completely done, and I'd never beat this game lol)
 
