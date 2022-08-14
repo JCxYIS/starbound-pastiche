@@ -26,9 +26,3 @@ Font "Silver" https://poppyworks.itch.io/silver
 Background "Endless Airways" https://opengameart.org/content/pixel-art-parallax-background
 Platform "Pixel Platformer" https://www.kenney.nl/assets/pixel-platformer
 BGM/SFX ripped from flash game "Starbound" http://www.startgames.ws/game/star_bound.html
-
-Developer
-===
-| ![](https://avatars.githubusercontent.com/u/26219761) | 
-| :--: |
-| [JCxYIS](https://github.com/JCxYIS)|  
